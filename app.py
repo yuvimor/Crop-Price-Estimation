@@ -45,7 +45,7 @@ def forecast_prices(district, crop):
         # Calculate overall drop or growth
         overall_change = 'Growth' if forecasted_prices[-1]['Forecasted Price'] > forecasted_prices[0]['Forecasted Price'] else 'Drop'
         
-        return forecasted_prices
+        return forecasted_prices, overall_change
     else:
         return []
 
