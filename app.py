@@ -41,6 +41,10 @@ def forecast_prices(district, crop):
             next_month_data = pd.DataFrame([latest_month], columns=['Month', 'Year'])
             forecast = model.predict(next_month_data)
             forecasted_prices.append({'Year': latest_month['Year'], 'Month': latest_month['Month'], 'Forecasted Price': forecast[0]})
+
+        # Calculate overall drop or growth
+        overall_change = 'Growth' if forecasted_prices[-1]['Forecasted Price'] > forecasted_prices[0]['Forecasted Price'] else 'Drop'
+        
         return forecasted_prices
     else:
         return []
@@ -49,7 +53,7 @@ def forecast_prices(district, crop):
 def recommend_crops(district):
     current_month = datetime.now().month
     top_crops = avg_price[(avg_price['District'] == district) & (avg_price['Month'] == current_month)].groupby('Crop')['Crop Price (Rs per quintal)'].mean().nlargest(3).reset_index()
-    return top_crops[['Crop', 'Crop Price (Rs per quintal)']]
+    return top_crops[['Crop', 'Crop Price (Rs per quintal)']].round(2)
 
 # Streamlit App
 st.title('Crop Price Estimation App')
@@ -69,6 +73,7 @@ if selected_crop and selected_district:
     if forecasted_prices:
         st.write(f'Forecasted Prices for {selected_crop} in {selected_district} for the next 3 months:')
         st.write(pd.DataFrame(forecasted_prices)['Forecasted Price'])
+        st.write(f"Overall Price Trend: {overall_change}")
     else:
         st.write(f'Not enough data for {selected_crop} in {selected_district}. Unable to make predictions.')
 
