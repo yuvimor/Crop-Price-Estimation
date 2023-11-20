@@ -42,8 +42,8 @@ def forecast_prices(district, crop):
             forecast = model.predict(next_month_data)
             forecasted_prices.append({'Year': latest_month['Year'], 'Month': latest_month['Month'], 'Forecasted Price': forecast[0]})
 
-            # Calculate overall drop or growth
-            overall_change = 'Growth' if forecasted_prices[-1]['Forecasted Price'] > forecasted_prices[0]['Forecasted Price'] else 'Drop'
+        # Calculate overall drop or growth
+        overall_change = 'Growth' if forecasted_prices[-1]['Forecasted Price'] > forecasted_prices[0]['Forecasted Price'] else 'Drop'
         
         return forecasted_prices
     else:
