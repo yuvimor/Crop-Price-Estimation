@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 # Loading the saved model and historical data
-model = joblib.load('gradient_boosting_model.pkl')
+model = joblib.load('model.pkl')
 historical_data = pd.read_csv('crop_data.csv') 
 
 # Recommendation function
