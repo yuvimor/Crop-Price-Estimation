@@ -48,7 +48,7 @@ def forecast_prices(district, crop):
 # Function to recommend crops based on the highest average prices in the current month
 def recommend_crops(district):
     current_month = datetime.now().month
-    top_crops = avg_price[(avg_price['District'] == district) & (avg_price['Month'] == current_month)].nlargest(3, 'Crop Price (Rs per quintal)')
+    top_crops = avg_price[(avg_price['District'] == district) & (avg_price['Month'] == current_month)].groupby('Crop')['Crop Price (Rs per quintal)'].mean().nlargest(3).reset_index()
     return top_crops[['Crop', 'Crop Price (Rs per quintal)']]
 
 # Streamlit App
@@ -68,7 +68,7 @@ if selected_crop and selected_district:
     
     if forecasted_prices:
         st.write(f'Forecasted Prices for {selected_crop} in {selected_district} for the next 3 months:')
-        st.write(pd.DataFrame(forecasted_prices))
+        st.write(pd.DataFrame(forecasted_prices)['Forecasted Price'])
     else:
         st.write(f'Not enough data for {selected_crop} in {selected_district}. Unable to make predictions.')
 
