@@ -40,7 +40,7 @@ def forecast_prices(district, crop):
 
             next_month_data = pd.DataFrame([latest_month], columns=['Month', 'Year'])
             forecast = model.predict(next_month_data)
-            forecasted_prices.append({'Year': latest_month['Year'], 'Month': latest_month['Month'], 'Forecasted Price': forecast[0]})
+            forecasted_prices.append({'Year': latest_month['Year'], 'Month': latest_month['Month'], 'Forecasted Price': round(forecast[0], 2)})
         
         return forecasted_prices
     else:
